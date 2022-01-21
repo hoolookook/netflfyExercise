@@ -15,7 +15,7 @@
 // npm install gulp -g
 // npm install gulp --save-dev
 // npm init
-// npm install del dateformat gulp-util gulp-banner gulp-beautify gulp-cache gulp-clean-css gulp-concat gulp-concat-css gulp-file-include gulp-if gulp-html-beautify gulp-imagemin@7.1.0 gulp-load-plugins gulp-print gulp-rename gulp-require gulp-strip-debug sass gulp-sass gulp-sourcemaps gulp-uglify gulp-useref gulp-watch gulp-autoprefixer --save -dev
+// npm install del dateformat gulp-util gulp-beautify gulp-cache gulp-clean-css gulp-concat gulp-concat-css gulp-file-include gulp-if gulp-html-beautify gulp-imagemin@7.1.0 gulp-load-plugins gulp-print gulp-rename gulp-require gulp-strip-debug sass gulp-sass gulp-sourcemaps gulp-uglify gulp-useref gulp-watch gulp-autoprefixer --save -dev
 
 //---------------필요할때만 사용-------------------//
 // npm install gulp-postcss@9.0.0 --save-dev
@@ -24,13 +24,11 @@
 // ---------------------------------------npm list----------------------------------------------------------------------------------------------------//
 // 패키지 변수
 const gulp = require("gulp"),
-  del = require("del"),
-  banner = require("gulp-banner"),
+  del = require("del"), //초기화
   beautify = require("gulp-beautify"), // html, css, js 코드정리
-  cache = require("gulp-cache"),
+  cache = require("gulp-cache"), //캐시 재사용 gulp-imagemin과함께
   cleanCSS = require("gulp-clean-css"), // CSS 파일 압축
   concat = require("gulp-concat"), // JS 파일 병합
-  concatCss = require("gulp-concat-css"), // css 파일 병합
   fileinclude = require("gulp-file-include"), // HTML 인클루드
   gulpif = require("gulp-if"),
   imagemin = require("gulp-imagemin"), // 이미지 최적화
@@ -41,16 +39,14 @@ const gulp = require("gulp"),
   sourcemaps = require("gulp-sourcemaps"), // SASS sourcemap
   uglify = require("gulp-uglify"), // JS 파일 압축
   useref = require("gulp-useref"), // 같은 이름 파일 압축
-  autoprefixer = require("gulp-autoprefixer"); //vendor prefix
+  // autoprefixer = require("gulp-autoprefixer"); //vendor prefix
 // postcss = require("gulp-postcss")
 // sorting = require('postcss-sorting');
 
 const src = "public/src/",
   resources = "resources/",
   prefix = "",
-  suffix = ".min",
-  version = "",
-  charset = "";
+  suffix = ".min";
 //charset = '@charset "UTF-8";\n';
 const paths = {
   html: {
@@ -137,15 +133,10 @@ async function css() {
       .src(paths.css.scss)
       .pipe(useref())
       .pipe(sass(sassOption).on("error", sass.logError))
-      .pipe(cleanCSS())
-      .pipe(concat("style.css"))
-      .pipe(gulp.dest(`${distPath}${resources}/css`));
+      .pipe(concat("style.css")) //벼ㅕㅇ합
+      .pipe(cleanCSS({ compatibiliy: "ie8" })) //한줄로
+      .pipe(gulp.dest(`${distPath}${resources}/css/layout`)); //layout폴더에 있어야 리소스 관리가 편해짐
   }
-  // css폴더 파일
-  gulp
-    .src(paths.css.src)
-    .pipe(useref())
-    .pipe(gulp.dest(`${distPath}`));
 }
 async function js() {
   // js
@@ -209,33 +200,6 @@ async function img() {
 async function font() {
   gulp.src(paths.font.src).pipe(gulp.dest(`${distPath}`));
 }
-// html 코드정리
-async function bfh() {
-  var option = {
-    indent_with_tabs: true,
-  };
-  gulp
-    .src(`${distPath}**/*.html`)
-    .pipe(beautify.html(option))
-    .pipe(gulp.dest(`${distPath}`));
-}
-// css 코드정리
-async function bfc() {
-  gulp
-    .src(`${distPath}**/*.css`)
-    .pipe(beautify.css())
-    .pipe(gulp.dest(`${distPath}`));
-}
-// js 코드정리
-async function bfj() {
-  var option = {
-    indent_with_tabs: true,
-  };
-  gulp
-    .src([`${distPath}**/*.js`, `!${distPath}**/js/lib/*.js`])
-    .pipe(beautify(option))
-    .pipe(gulp.dest(`${distPath}`));
-}
 
 // task
 gulp.task("cleanBuild", cleanBuild);
@@ -245,9 +209,6 @@ gulp.task("css", css);
 gulp.task("js", js);
 gulp.task("img", img);
 gulp.task("font", font);
-gulp.task("bfh", bfh);
-gulp.task("bfc", bfc);
-gulp.task("bfj", bfj);
 function watch() {
   buildType = false;
   gulp.watch(`${src}**/**/*.html`, html);
@@ -279,7 +240,7 @@ gulp.task("default", watch);
 // // npm install gulp -g
 // // npm install gulp --save-dev
 // // npm init
-// // npm install del dateformat gulp-util gulp-banner gulp-beautify gulp-cache gulp-clean-css gulp-concat gulp-concat-css gulp-file-include gulp-if gulp-html-beautify gulp-imagemin@7.1.0 gulp-load-plugins gulp-print gulp-rename gulp-require gulp-strip-debug sass gulp-sass gulp-sourcemaps gulp-uglify gulp-useref gulp-watch gulp-autoprefixer --save -dev
+// // npm install del dateformat gulp-util gulp-beautify gulp-cache gulp-clean-css gulp-concat gulp-concat-css gulp-file-include gulp-if gulp-html-beautify gulp-imagemin@7.1.0 gulp-load-plugins gulp-print gulp-rename gulp-require gulp-strip-debug sass gulp-sass gulp-sourcemaps gulp-uglify gulp-useref gulp-watch gulp-autoprefixer --save -dev
 
 // //---------------필요할때만 사용-------------------//
 // // npm install gulp-postcss@9.0.0 --save-dev
@@ -289,12 +250,11 @@ gulp.task("default", watch);
 // // 패키지 변수
 // const gulp = require("gulp"),
 //   del = require("del"),
-//   banner = require("gulp-banner"),
 //   beautify = require("gulp-beautify"), // html, css, js 코드정리
 //   cache = require("gulp-cache"),
 //   cleanCSS = require("gulp-clean-css"), // CSS 파일 압축
 //   concat = require("gulp-concat"), // JS 파일 병합
-//   concatCss = require("gulp-concat-css"), // css 파일 병합
+
 //   fileinclude = require("gulp-file-include"), // HTML 인클루드
 //   gulpif = require("gulp-if"),
 //   imagemin = require("gulp-imagemin"), // 이미지 최적화
