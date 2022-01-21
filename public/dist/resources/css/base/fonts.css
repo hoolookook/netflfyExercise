@@ -1,6 +1,3 @@
-@charset "UTF-8";
-
-body {
-    font-family: "Noto Sans Korean", "Malgun Gothic", "돋움", "dotum", "AppleGothic", Helvetica, Arial, sans-serif;
-    font-weight: 400;
+font {
+    width: 99999px;
 }
