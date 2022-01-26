@@ -24,6 +24,7 @@
 // ---------------------------------------npm list----------------------------------------------------------------------------------------------------//
 // 패키지 변수
 const gulp = require("gulp"),
+  // banner = require("gulp-banner"),
   del = require("del"), //초기화
   beautify = require("gulp-beautify"), // html, css, js 코드정리
   cache = require("gulp-cache"), //캐시 재사용 gulp-imagemin과함께
@@ -39,14 +40,16 @@ const gulp = require("gulp"),
   sourcemaps = require("gulp-sourcemaps"), // SASS sourcemap
   uglify = require("gulp-uglify"), // JS 파일 압축
   useref = require("gulp-useref"), // 같은 이름 파일 압축
-  // autoprefixer = require("gulp-autoprefixer"); //vendor prefix
+  autoprefixer = require("gulp-autoprefixer"); //vendor prefix
 // postcss = require("gulp-postcss")
 // sorting = require('postcss-sorting');
 
 const src = "public/src/",
   resources = "resources/",
   prefix = "",
-  suffix = ".min";
+  suffix = ".min",
+  charset = "";
+
 //charset = '@charset "UTF-8";\n';
 const paths = {
   html: {
